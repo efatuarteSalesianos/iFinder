@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ifinder-65a49": {
+      "hosting": {
+        "iFinder": [
+          "ifinder-65a49"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ifinder-65a49"
+  }
+}
