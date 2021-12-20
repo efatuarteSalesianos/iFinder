@@ -1,7 +1,7 @@
 {
   "hosting": {
-    "target": "iFinder",
-    "public": "dist/iFinder",
+    "target": "angular-finder",
+    "public": "dist/angular-finder",
     "ignore": [
       "**/.*"
     ],

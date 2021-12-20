@@ -1,12 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "analytics": "b13bdd36-9407-414c-ab3f-873fb261c28a"
+    "analytics": "582715fd-08e9-4fee-b93a-58e49d58d90e"
   },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "iFinder": {
+    "angular-finder": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:class": {
@@ -41,7 +41,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/iFinder",
+            "outputPath": "dist/angular-finder",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -93,10 +93,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "iFinder:build:production"
+              "browserTarget": "angular-finder:build:production"
             },
             "development": {
-              "browserTarget": "iFinder:build:development"
+              "browserTarget": "angular-finder:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -104,7 +104,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "iFinder:build"
+            "browserTarget": "angular-finder:build"
           }
         },
         "test": {
@@ -130,7 +130,7 @@
           "options": {
             "prerender": false,
             "ssr": false,
-            "browserTarget": "iFinder:build:production",
+            "browserTarget": "angular-finder:build:production",
             "firebaseProject": "ifinder-65a49",
             "firebaseHostingSite": "ifinder-65a49"
           }
@@ -138,5 +138,5 @@
       }
     }
   },
-  "defaultProject": "iFinder"
+  "defaultProject": "angular-finder"
 }

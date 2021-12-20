@@ -2,7 +2,7 @@
   "targets": {
     "ifinder-65a49": {
       "hosting": {
-        "iFinder": [
+        "angular-finder": [
           "ifinder-65a49"
         ]
       }

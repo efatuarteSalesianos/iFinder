@@ -1,0 +1,61 @@
+<app-toolbar></app-toolbar>
+<div fxFlexFill fxLayout="column" fxLayoutAlign="start center">
+  <form [formGroup]="objectForm" fxLayout="column">
+      <mat-form-field appearance="fill" fxFlex="60">
+          <mat-label>Nombre del Objeto</mat-label>
+          <input matInput placeholder="Nombre" name="name" formControlName="name" required>
+      </mat-form-field>
+      <div *ngIf="objectForm.controls['name'].dirty || objectForm.controls['name'].touched" class="alert alert-danger">
+          <div *ngIf="objectForm.get('name')?.hasError('required')">
+              Debe introducir un nombre para su objeto.
+          </div>
+          <div *ngIf="objectForm.get('name')?.hasError('minlength')">
+              Debe introducir un nombre de objeto más largo.
+          </div>
+      </div>
+      <mat-form-field appearance="fill" fxFlex="60">
+          <mat-label>Ubicación</mat-label>
+          <input matInput placeholder="Ubicación" name="location" formControlName="location" required>
+      </mat-form-field>
+      <div *ngIf="objectForm.controls['location'].dirty || objectForm.controls['location'].touched" class="alert alert-danger">
+          <div *ngIf="objectForm.get('location')?.hasError('required')">
+              Debe introducir introducir la ubicación donde perdió el objeto.
+          </div>
+      </div>
+      <button mat-raised-button color="primary">Abrir Mapa</button>
+      <mat-form-field appearance="fill">
+        <mat-label>Categoría</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let category of categories | async" [value]="category.name">
+            {{category.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" fxFlex="60">
+        <mat-label>Imagen del objeto</mat-label>
+        <input matInput placeholder="Imagen" name="photo" formControlName="photo" required>
+    </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Descripción del objeto</mat-label>
+        <textarea matInput formControlName="description" placeholder="Indique claramente qué características tiene el objeto"></textarea>
+      </mat-form-field>
+      <div *ngIf="objectForm.controls['description'].dirty || objectForm.controls['description'].touched" class="alert alert-danger">
+          <div *ngIf="objectForm.get('description')?.hasError('required')">
+              Debe introducir una descripción del objeto perdido.
+          </div>
+          <div *ngIf="objectForm.get('description')?.hasError('minlength')">
+              Debe introducir una descripción más larga.
+          </div>
+      </div>
+      <label id="example-radio-group-label">¿Has perdido o has encontrado un objeto?</label>
+      <mat-radio-group aria-labelledby="example-radio-group-label" formControlName="estado" class="example-radio-group">
+        <mat-radio-button class="example-radio-button" [value]="true">
+          He perdido un objeto
+        </mat-radio-button>
+        <mat-radio-button class="example-radio-button" [value]="false">
+          He encontrado un objeto
+        </mat-radio-button>
+      </mat-radio-group>
+      <button mat-raised-button color="primary" (click)="register()">Registrar Objeto</button>
+  </form>
+</div>
