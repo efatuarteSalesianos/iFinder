@@ -23,6 +23,10 @@ export class HomeComponent implements OnInit {
 
   latlng!: google.maps.LatLngLiteral;
 
+  address: string = '';
+
+  fundacionDonBoscoLatLng: google.maps.LatLngLiteral = {lat: 37.36133765325532, lng: -5.964321690581096};
+
   markerOptions: google.maps.MarkerOptions = {
     draggable: true
   };
@@ -78,7 +82,6 @@ export class HomeComponent implements OnInit {
   searchAddress() {
     let addressSplited = this.objectForm.get('location')?.value.split(',');
     this.latlng = {lat: Number(addressSplited[0]), lng: Number(addressSplited[1])};
-    console.log(this.latlng);
   }
 
   updateLocationMarker(event: google.maps.MapMouseEvent) {
