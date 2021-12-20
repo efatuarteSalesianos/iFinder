@@ -2,9 +2,11 @@ import { AuthService } from './../../services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Category } from './../../models/interfaces/category.interface';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { catchError, map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 const COLLECTION_LOST_OBJECTS = 'lost-objects';
 const COLLECTION_FOUND_OBJECTS = 'found-objects';
@@ -17,7 +19,10 @@ const COLLECTION_FOUND_OBJECTS = 'found-objects';
 
 export class HomeComponent implements OnInit {
 
-  fundacionDonBoscoLatLng: google.maps.LatLngLiteral = {lat: 37.36133765325532, lng: -5.964321690581096};
+  apiLoaded: Observable<boolean>;
+
+  latlng!: google.maps.LatLngLiteral;
+
   markerOptions: google.maps.MarkerOptions = {
     draggable: true
   };
@@ -33,7 +38,13 @@ export class HomeComponent implements OnInit {
     estado: new FormControl('', Validators.required)
   });
 
-  constructor(private firestore: AngularFirestore, private authService: AuthService) { }
+  constructor(private firestore: AngularFirestore, private authService: AuthService, private httpClient: HttpClient) {
+    this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyByNlJfkMKkavCkpc9KMY0Wf5fASr4OOic', 'callback')
+        .pipe(
+          map(() => true),
+          catchError(() => of(false)),
+        );
+   }
 
   ngOnInit(): void {
     this.categories = this.firestore.collection<Category>('categories').valueChanges();
@@ -66,10 +77,12 @@ export class HomeComponent implements OnInit {
 
   searchAddress() {
     let addressSplited = this.objectForm.get('location')?.value.split(',');
-    this.fundacionDonBoscoLatLng = {lat: Number(addressSplited[0]), lng: Number(addressSplited[1])};
+    this.latlng = {lat: Number(addressSplited[0]), lng: Number(addressSplited[1])};
+    console.log(this.latlng);
   }
 
   updateLocationMarker(event: google.maps.MapMouseEvent) {
     console.log(`${event.latLng?.lat()} , ${event.latLng?.lat()}`);
   }
+
 }
