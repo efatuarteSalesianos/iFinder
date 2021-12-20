@@ -18,13 +18,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule, USE_DEVICE_LANGUAGE, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
 import { AngularFireAuthGuardModule } from '@angular/fire/compat/auth-guard';
+import { MapComponent } from './components/map/map.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ToolbarComponent,
-    HomeComponent
+    HomeComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +45,7 @@ import { AngularFireAuthGuardModule } from '@angular/fire/compat/auth-guard';
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),
+    GoogleMapsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

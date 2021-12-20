@@ -1,0 +1,5 @@
+<div *ngIf="apiLoaded | async">
+    <google-map [center]="fundacionDonBoscoLatLng">
+        <map-marker (mapDragend)="updateLocationMarker($event)" [position]="fundacionDonBoscoLatLng" [options]="markerOptions"></map-marker>
+    </google-map>
+</div>

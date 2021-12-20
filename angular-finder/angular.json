@@ -131,8 +131,8 @@
             "prerender": false,
             "ssr": false,
             "browserTarget": "angular-finder:build:production",
-            "firebaseProject": "ifinder-65a49",
-            "firebaseHostingSite": "ifinder-65a49"
+            "firebaseProject": "angular-ifinder",
+            "firebaseHostingSite": "angular-ifinder"
           }
         }
       }

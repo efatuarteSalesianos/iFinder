@@ -17,6 +17,11 @@ const COLLECTION_FOUND_OBJECTS = 'found-objects';
 
 export class HomeComponent implements OnInit {
 
+  fundacionDonBoscoLatLng: google.maps.LatLngLiteral = {lat: 37.36133765325532, lng: -5.964321690581096};
+  markerOptions: google.maps.MarkerOptions = {
+    draggable: true
+  };
+
   categories!: Observable<Category[]>;
 
   objectForm = new FormGroup({
@@ -31,7 +36,7 @@ export class HomeComponent implements OnInit {
   constructor(private firestore: AngularFirestore, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.categories = this.firestore.collection<Category>('category').valueChanges();
+    this.categories = this.firestore.collection<Category>('categories').valueChanges();
   }
 
   register() {
@@ -57,5 +62,14 @@ export class HomeComponent implements OnInit {
       this.authService.login();
     }
 
+  }
+
+  searchAddress() {
+    let addressSplited = this.objectForm.get('location')?.value.split(',');
+    this.fundacionDonBoscoLatLng = {lat: Number(addressSplited[0]), lng: Number(addressSplited[1])};
+  }
+
+  updateLocationMarker(event: google.maps.MapMouseEvent) {
+    console.log(`${event.latLng?.lat()} , ${event.latLng?.lat()}`);
   }
 }

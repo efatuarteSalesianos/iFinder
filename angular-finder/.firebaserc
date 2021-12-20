@@ -6,9 +6,16 @@
           "ifinder-65a49"
         ]
       }
+    },
+    "angular-ifinder": {
+      "hosting": {
+        "angular-finder": [
+          "angular-ifinder"
+        ]
+      }
     }
   },
   "projects": {
-    "default": "ifinder-65a49"
+    "default": "angular-ifinder"
   }
 }
