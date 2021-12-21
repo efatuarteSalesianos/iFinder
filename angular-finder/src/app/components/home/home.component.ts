@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { MapGeocoder } from '@angular/google-maps';
 
 const COLLECTION_LOST_OBJECTS = 'lost-objects';
 const COLLECTION_FOUND_OBJECTS = 'found-objects';
@@ -23,19 +24,21 @@ export class HomeComponent implements OnInit {
 
   latlng!: google.maps.LatLngLiteral;
 
-  address: string = '';
-
-  fundacionDonBoscoLatLng: google.maps.LatLngLiteral = {lat: 37.36133765325532, lng: -5.964321690581096};
-
   markerOptions: google.maps.MarkerOptions = {
     draggable: true
   };
 
+  address = '';
+  lat!: number;
+  lng!: number;
+
   categories!: Observable<Category[]>;
+  geocoder!: google.maps.Geocoder;
 
   objectForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
     location: new FormControl('', Validators.required),
+    radio: new FormControl(),
     category: new FormControl(),
     photo: new FormControl(),
     description: new FormControl('', [Validators.required, Validators.minLength(20), Validators.maxLength(200)]),
@@ -43,7 +46,7 @@ export class HomeComponent implements OnInit {
   });
 
   constructor(private firestore: AngularFirestore, private authService: AuthService, private httpClient: HttpClient) {
-    this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyByNlJfkMKkavCkpc9KMY0Wf5fASr4OOic', 'callback')
+    this.apiLoaded = httpClient.jsonp('https://maps.googleapis.com/maps/api/js?key=AIzaSyByNlJfkMKkavCkpc9KMY0Wf5fASr4OOic&libraries=geometry', 'callback')
         .pipe(
           map(() => true),
           catchError(() => of(false)),
@@ -51,6 +54,7 @@ export class HomeComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.geocoder = new google.maps.Geocoder();
     this.categories = this.firestore.collection<Category>('categories').valueChanges();
   }
 
@@ -60,6 +64,7 @@ export class HomeComponent implements OnInit {
         this.firestore.collection(COLLECTION_LOST_OBJECTS).doc().set({
           name: this.objectForm.get('name')?.value,
           location: this.objectForm.get('location')?.value,
+          radio: this.objectForm.get('radio')?.value,
           category: this.objectForm.get('category')?.value,
           photo: this.objectForm.get('photo')?.value,
           description: this.objectForm.get('description')?.value,
@@ -68,6 +73,7 @@ export class HomeComponent implements OnInit {
       this.firestore.collection(COLLECTION_FOUND_OBJECTS).doc().set({
         name: this.objectForm.get('name')?.value,
         location: this.objectForm.get('location')?.value,
+        radio: this.objectForm.get('radio')?.value,
         category: this.objectForm.get('category')?.value,
         photo: this.objectForm.get('photo')?.value,
         description: this.objectForm.get('description')?.value,
@@ -80,12 +86,25 @@ export class HomeComponent implements OnInit {
   }
 
   searchAddress() {
-    let addressSplited = this.objectForm.get('location')?.value.split(',');
-    this.latlng = {lat: Number(addressSplited[0]), lng: Number(addressSplited[1])};
+    this.geocoder.geocode({
+      address: this.objectForm.get('location')?.value
+    }, (results, status) => {
+      if(status == "OK" && results && results.length > 0) {
+        this.latlng = {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()};
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
   }
 
   updateLocationMarker(event: google.maps.MapMouseEvent) {
-    console.log(`${event.latLng?.lat()} , ${event.latLng?.lat()}`);
+    /*let location =  `${event.latLng?.lat()}, ${event.latLng?.lng()}`;
+    this.geocoder.geocode({
+      address: location
+    }).subscribe(({results}) => {
+      this.address = results[0].formatted_address;
+      this.objectForm.get('location')?.setValue(this.address);
+    });*/
   }
 
 }

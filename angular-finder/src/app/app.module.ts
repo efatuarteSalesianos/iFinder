@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { ToolbarComponent } from './components/shared/toolbar/toolbar.component';
 import { HomeComponent } from './components/home/home.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule, USE_DEVICE_LANGUAGE, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
@@ -43,7 +43,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),
-    GoogleMapsModule
+    GoogleMapsModule,
+    HttpClientJsonpModule
   ],
   providers: [],
   bootstrap: [AppComponent]
